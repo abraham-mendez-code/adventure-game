@@ -47,6 +47,8 @@ public class GamePanel extends JPanel implements Runnable {
         // this loop runs as long as the gameThread exists
         while (gameThread != null) {
 
+            System.out.println("The game loop is running");
+
             // 1 UPDATE: update information such as character positions
             update();
 
@@ -64,7 +66,19 @@ public class GamePanel extends JPanel implements Runnable {
     // this is a built-in method for JPanel to draw to the panel, passes the Graphics class which has functions to draw objects on the screen.
     public void paintComponent(Graphics g) {
 
+
         // this is needed whenever paintComponent is called (JPanel.paintComponent(g)
         super.paintComponent(g);
+
+        // declare a 2D graphics object and, assign it Graphics cast as Graphics2D
+        Graphics2D g2 =  (Graphics2D) g;
+
+        // this sets a color to use for drawing objects
+        g2.setColor(Color.white);
+
+        // this draws a rectangle to the screen, this will be the player object drawn at position (100, 100) with a height and width of TILE_SIZE
+        g2.fillRect(100, 100, TILE_SIZE, TILE_SIZE);
+
+        g2.dispose(); // dispose of this graphics context and release any system resources that it is using.
     }
 }
