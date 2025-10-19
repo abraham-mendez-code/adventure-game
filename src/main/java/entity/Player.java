@@ -50,27 +50,36 @@ public class Player extends Entity{
         }
     }
 
-    // this methods updates player positon and direction faced based on key input
+    // this methods updates player positon and direction faced based on key input 60/second
     public void update() {
 
-        // this will update player positon and direction based on key input
-        if(keyHandler.upPressed == true) {
-            direction = "up";
-            y -= speed;
-        }
-        else if (keyHandler.downPressed == true) {
-            direction = "down";
-            y += speed;
-        }
-        else if (keyHandler.leftPressed == true) {
-            direction = "left";
-            x -= speed;
-        }
-        else if (keyHandler.rightPressed == true) {
-            direction = "right";
-            x += speed;
-        }
+        // this will update player positon and direction based on key input ONLY IF A KEY IS BEING PRESSED
+        if (keyHandler.upPressed == true || keyHandler.downPressed == true || keyHandler.leftPressed == true || keyHandler.rightPressed == true) {
+            // check which key is being pressed
+            if (keyHandler.upPressed == true) {
+                direction = "up";
+                y -= speed;
+            } else if (keyHandler.downPressed == true) {
+                direction = "down";
+                y += speed;
+            } else if (keyHandler.leftPressed == true) {
+                direction = "left";
+                x -= speed;
+            } else if (keyHandler.rightPressed == true) {
+                direction = "right";
+                x += speed;
+            }
 
+            spriteCounter++; // increase sprite counter every frame
+            if (spriteCounter > 12) { // after 12 frames
+                if (spriteNumber == 1) { // if the sprite number is 1
+                    spriteNumber = 2; // change it to 2
+                } else if (spriteNumber == 2) { // otherwise if the sprite number is 2
+                    spriteNumber = 1; // change it to 1
+                }
+                spriteCounter = 0; // reset sprite counter every 10 frames
+            }
+        }
     }
 
     public void draw(Graphics2D  g2) {
@@ -79,16 +88,36 @@ public class Player extends Entity{
         // this switch sets the image based on the direction
         switch(direction) {
             case "up":
-                image = up1;
+                if (spriteNumber == 1) {
+                    image = up1;
+                }
+                if (spriteNumber ==2) {
+                    image = up2;
+                }
                 break;
             case "down":
-                image = down1;
+                if (spriteNumber == 1) {
+                    image = down1;
+                }
+                if (spriteNumber == 2) {
+                    image = down2;
+                }
                 break;
             case "left":
-                image = left1;
+                if (spriteNumber == 1) {
+                    image = left1;
+                }
+                if (spriteNumber == 2) {
+                    image = left2;
+                }
                 break;
             case "right":
-                image = right1;
+                if (spriteNumber == 1) {
+                    image = right1;
+                }
+                if (spriteNumber ==2) {
+                    image = right2;
+                }
                 break;
         }
 
