@@ -44,5 +44,27 @@ public class GamePanel extends JPanel implements Runnable {
     @Override
     public void run() {
 
+        // this loop runs as long as the gameThread exists
+        while (gameThread != null) {
+
+            // 1 UPDATE: update information such as character positions
+            update();
+
+            // 2 DRAW: draw the screen with the updated information
+            repaint(); // this is calling the paintComponent method
+
+        }
+
+    }
+
+    public void update() {
+
+    }
+
+    // this is a built-in method for JPanel to draw to the panel, passes the Graphics class which has functions to draw objects on the screen.
+    public void paintComponent(Graphics g) {
+
+        // this is needed whenever paintComponent is called (JPanel.paintComponent(g)
+        super.paintComponent(g);
     }
 }

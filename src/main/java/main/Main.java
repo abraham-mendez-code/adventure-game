@@ -33,6 +33,8 @@ public class Main {
         // this makes the window visible
         window.setVisible(true);
 
+        gamePanel.startGameThread();
+
     }
 
 }
