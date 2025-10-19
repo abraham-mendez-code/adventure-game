@@ -16,7 +16,13 @@ public class GamePanel extends JPanel implements Runnable {
     final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // (48 x 16 = 768 pixels) multiply the columns by the scaled tile size to get the width
     final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // (48 x 12 = 576 pixels) multiply the rows by the scaled tile size to get the height
 
+    KeyHandler keyHandler = new KeyHandler(); // KeyHandler allows receipt of user keyboard input
     Thread gameThread; // Thread allows for control over starting and stopping of a program, can be used for game FPS
+
+    // Set the player's default positon, in java the upper left corner is x0, y0
+    int playerX = 100;
+    int playerY = 100;
+    int playerSpeed = 4; // how many pixels the player can move at once
 
     public GamePanel () {
 
@@ -29,6 +35,12 @@ public class GamePanel extends JPanel implements Runnable {
         // if set to true, all the drawing from this component will be done in an offscreen painting buffer
         // improves the game's rendering performance
         this.setDoubleBuffered(true);
+
+        // this lets the game panel handle key input
+        this.addKeyListener(keyHandler);
+
+        // setFocusable lets the GamePanel be focused for key input
+        this.setFocusable(true);
 
     }
 
@@ -59,7 +71,22 @@ public class GamePanel extends JPanel implements Runnable {
 
     }
 
+
     public void update() {
+
+        // this will update player positon based on key input
+        if(keyHandler.upPressed == true) {
+            playerY -= playerSpeed;
+        }
+        else if (keyHandler.downPressed == true) {
+            playerY += playerSpeed;
+        }
+        else if (keyHandler.leftPressed == true) {
+            playerX -= playerSpeed;
+        }
+        else if (keyHandler.rightPressed == true) {
+            playerX += playerSpeed;
+        }
 
     }
 
@@ -76,8 +103,8 @@ public class GamePanel extends JPanel implements Runnable {
         // this sets a color to use for drawing objects
         g2.setColor(Color.white);
 
-        // this draws a rectangle to the screen, this will be the player object drawn at position (100, 100) with a height and width of TILE_SIZE
-        g2.fillRect(100, 100, TILE_SIZE, TILE_SIZE);
+        // this draws a rectangle to the screen, this will be the player object drawn at (playerX, playerY) with a height and width of TILE_SIZE
+        g2.fillRect(playerX, playerY, TILE_SIZE, TILE_SIZE);
 
         g2.dispose(); // dispose of this graphics context and release any system resources that it is using.
     }
