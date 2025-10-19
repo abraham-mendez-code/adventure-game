@@ -1,5 +1,7 @@
 package main;
 
+import entity.Player;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -9,7 +11,7 @@ public class GamePanel extends JPanel implements Runnable {
     final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
     final int SCALE = 3; // multiples the originalTileSize by this amount
 
-    final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // scale the tile size ( (16x16) x 3 = 48x48 tile)
+    public final int TILE_SIZE = ORIGINAL_TILE_SIZE * SCALE; // scale the tile size ( (16x16) x 3 = 48x48 tile)
     final int MAX_SCREEN_COL = 16; // this stores columns (pixels)
     final int MAX_SCREEN_ROW = 12; // this stores rows (pixels)
 
@@ -21,6 +23,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     KeyHandler keyHandler = new KeyHandler(); // KeyHandler allows receipt of user keyboard input
     Thread gameThread; // Thread allows for control over starting and stopping of a program, can be used for game FPS
+    Player player = new Player(this, keyHandler); // Instantiate a player class with this game panel and the keyHandler
 
     // Set the player's default positon, in java the upper left corner is x0, y0
     int playerX = 100;
@@ -129,20 +132,7 @@ public class GamePanel extends JPanel implements Runnable {
 
     public void update() {
 
-        // this will update player positon based on key input
-        if(keyHandler.upPressed == true) {
-            playerY -= playerSpeed;
-        }
-        else if (keyHandler.downPressed == true) {
-            playerY += playerSpeed;
-        }
-        else if (keyHandler.leftPressed == true) {
-            playerX -= playerSpeed;
-        }
-        else if (keyHandler.rightPressed == true) {
-            playerX += playerSpeed;
-        }
-
+        player.update();
     }
 
     // this is a built-in method for JPanel to draw to the panel, passes the Graphics class which has functions to draw objects on the screen.
@@ -155,11 +145,7 @@ public class GamePanel extends JPanel implements Runnable {
         // declare a 2D graphics object and, assign it Graphics cast as Graphics2D
         Graphics2D g2 =  (Graphics2D) g;
 
-        // this sets a color to use for drawing objects
-        g2.setColor(Color.white);
-
-        // this draws a rectangle to the screen, this will be the player object drawn at (playerX, playerY) with a height and width of TILE_SIZE
-        g2.fillRect(playerX, playerY, TILE_SIZE, TILE_SIZE);
+        player.draw(g2);
 
         g2.dispose(); // dispose of this graphics context and release any system resources that it is using.
     }
