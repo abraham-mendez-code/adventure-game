@@ -16,6 +16,9 @@ public class GamePanel extends JPanel implements Runnable {
     final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // (48 x 16 = 768 pixels) multiply the columns by the scaled tile size to get the width
     final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // (48 x 12 = 576 pixels) multiply the rows by the scaled tile size to get the height
 
+    // FPS
+    int FPS = 60;
+
     KeyHandler keyHandler = new KeyHandler(); // KeyHandler allows receipt of user keyboard input
     Thread gameThread; // Thread allows for control over starting and stopping of a program, can be used for game FPS
 
@@ -52,14 +55,17 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
 
-    // this method contains the game loop
+    /*
+    //  This method uses the "Sleep" method for game loop
     @Override
     public void run() {
 
+        // System.nanoTime() returns the current value of the running JVM time source in nanoseconds
+        double drawInterval = 1000000000/FPS; // 0.01666 seconds
+        double nextDrawTime = System.nanoTime() + drawInterval; // this makes the nextDrawTime .01666 seconds from now
+
         // this loop runs as long as the gameThread exists
         while (gameThread != null) {
-
-            System.out.println("The game loop is running");
 
             // 1 UPDATE: update information such as character positions
             update();
@@ -67,8 +73,57 @@ public class GamePanel extends JPanel implements Runnable {
             // 2 DRAW: draw the screen with the updated information
             repaint(); // this is calling the paintComponent method
 
+            try {
+                double remainingTime = nextDrawTime - System.nanoTime(); // subtract the current time from nextDrawTime
+                remainingTime = remainingTime/1000000; // convert the remaining time from nanoseconds to milliseconds
+
+                if (remainingTime < 0) {
+                    remainingTime = 0; // if the update and draw time took longer than the drawInterval, no time is left no need to sleep
+                }
+
+                Thread.sleep((long) remainingTime); // sleep the thread for the remaining time (pause the game)
+
+                nextDrawTime += drawInterval; // nextDrawTime will be 0.01666 seconds later
+            }
+            catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
 
+    }
+    */
+
+    public void run() {
+
+        double drawInterval = 1000000000/FPS;
+        double delta = 0;
+        long lastTime = System.nanoTime();
+        long currentTime;
+        // check FPS
+        long timer = 0;
+        int drawCount = 0;
+
+        while(gameThread != null) {
+
+            currentTime = System.nanoTime();
+
+            delta += (currentTime - lastTime) / drawInterval; // add the passed time divided by draw interval to delta
+            timer += (currentTime - lastTime);
+            lastTime = currentTime;
+
+            if (delta >= 1) {
+                update();
+                repaint();
+                delta--;
+                drawCount++;
+            }
+
+            if (timer >= 1000000000) {
+                System.out.println("FPS:" + drawCount);
+                drawCount = 0;
+                timer = 0;
+            }
+        }
     }
 
 
