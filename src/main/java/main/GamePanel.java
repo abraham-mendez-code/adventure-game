@@ -3,7 +3,7 @@ package main;
 import javax.swing.*;
 import java.awt.*;
 
-public class GamePanel  extends JPanel {
+public class GamePanel extends JPanel implements Runnable {
 
     // SCREEN SETTINGS
     final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
@@ -15,6 +15,8 @@ public class GamePanel  extends JPanel {
 
     final int SCREEN_WIDTH = TILE_SIZE * MAX_SCREEN_COL; // (48 x 16 = 768 pixels) multiply the columns by the scaled tile size to get the width
     final int SCREEN_HEIGHT = TILE_SIZE * MAX_SCREEN_ROW; // (48 x 12 = 576 pixels) multiply the rows by the scaled tile size to get the height
+
+    Thread gameThread; // Thread allows for control over starting and stopping of a program, can be used for game FPS
 
     public GamePanel () {
 
@@ -30,4 +32,17 @@ public class GamePanel  extends JPanel {
 
     }
 
+    // this method instantiates the game thread  constructor with this class
+    public void startGameThread() {
+
+        gameThread = new Thread(this);
+        gameThread.start(); // called the run method
+    }
+
+
+    // this method contains the game loop
+    @Override
+    public void run() {
+
+    }
 }
