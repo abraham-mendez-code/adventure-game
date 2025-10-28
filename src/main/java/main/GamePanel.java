@@ -25,10 +25,6 @@ public class GamePanel extends JPanel implements Runnable {
     Thread gameThread; // Thread allows for control over starting and stopping of a program, can be used for game FPS
     Player player = new Player(this, keyHandler); // Instantiate a player class with this game panel and the keyHandler
 
-    // Set the player's default positon, in java the upper left corner is x0, y0
-    int playerX = 100;
-    int playerY = 100;
-    int playerSpeed = 4; // how many pixels the player can move at once
 
     public GamePanel () {
 
