@@ -10,33 +10,43 @@ import java.io.IOException;
 
 public class Player extends Entity{
 
-    GamePanel gamePanel;
+    // CLASS ATTRIBUTES
+    GamePanel gp;
     KeyHandler keyHandler;
 
+    // PLAYER POSITION ON SCREEN
     public final int screenX;
     public final int screenY;
 
-    public Player(GamePanel gamePanel, KeyHandler keyHandler) {
+    // CONSTRUCTOR
+    public Player(GamePanel gp, KeyHandler keyHandler) {
 
-        this.gamePanel = gamePanel;
+        this.gp = gp;
         this.keyHandler = keyHandler;
 
-        screenX = gamePanel.SCREEN_WIDTH / 2 - (gamePanel.TILE_SIZE / 2); // center of the screen offset by center of player sprite size
-        screenY = gamePanel.SCREEN_HEIGHT / 2 - (gamePanel.TILE_SIZE / 2);
+        screenX = gp.SCREEN_WIDTH / 2 - (gp.TILE_SIZE / 2); // center of the screen offset by center of player sprite size
+        screenY = gp.SCREEN_HEIGHT / 2 - (gp.TILE_SIZE / 2);
+
+        solidArea = new Rectangle();
+        solidArea.x = 8;
+        solidArea.y = 16;
+        solidArea.width = 32;
+        solidArea.height = 32;
 
         setDefaultValues();
         getPlayerImage();
     }
 
+    // this method sets the default player positon to the center of the screen
     public void setDefaultValues() {
 
-        worldX = gamePanel.TILE_SIZE * 23; // (48 * 23)
-        worldY = gamePanel.TILE_SIZE * 21; // (48 * 21)
+        worldX = gp.TILE_SIZE * 23; // (48 * 23)
+        worldY = gp.TILE_SIZE * 21; // (48 * 21)
         speed = 4;
         direction = "down";
     }
 
-    // this method sets the player image for each direction
+    // this method sets the player image for each movement direction
     public void getPlayerImage() {
 
         try {
@@ -56,7 +66,7 @@ public class Player extends Entity{
         }
     }
 
-    // this methods updates player positon and direction faced based on key input 60/second
+    // this method updates player positon and direction faced based on key input 60/second, also checks for collision
     public void update() {
 
         // this will update player positon and direction based on key input ONLY IF A KEY IS BEING PRESSED
@@ -76,6 +86,9 @@ public class Player extends Entity{
                 worldX += speed;
             }
 
+            collisionOn = false;
+            gp.collisionManager.checkTile(this); // check tile for collision
+
             spriteCounter++; // increase sprite counter every frame
             if (spriteCounter > 12) { // after 12 frames
                 if (spriteNumber == 1) { // if the sprite number is 1
@@ -88,6 +101,7 @@ public class Player extends Entity{
         }
     }
 
+    // this method draws the player movement image based on direction
     public void draw(Graphics2D  g2) {
         BufferedImage image = null;
 
@@ -128,7 +142,7 @@ public class Player extends Entity{
         }
 
         // Draw the image based on direction
-        g2.drawImage(image, screenX, screenY, gamePanel.TILE_SIZE, gamePanel.TILE_SIZE, null);
+        g2.drawImage(image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
 
     }
 }

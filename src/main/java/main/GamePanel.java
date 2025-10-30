@@ -8,6 +8,8 @@ import java.awt.*;
 
 public class GamePanel extends JPanel implements Runnable {
 
+    // CLASS ATTRIBUTES
+
     // SCREEN SETTINGS
     final int ORIGINAL_TILE_SIZE = 16; // 16x16 tile
     final int SCALE = 3; // multiples the originalTileSize by this amount
@@ -31,9 +33,11 @@ public class GamePanel extends JPanel implements Runnable {
     TileManager tileManager = new TileManager(this);
     KeyHandler keyHandler = new KeyHandler(); // KeyHandler allows receipt of user keyboard input
     Thread gameThread; // Thread allows for control over starting and stopping of a program, can be used for game FPS
+    public CollisionManager collisionManager = new CollisionManager(this);
     public Player player = new Player(this, keyHandler); // Instantiate a player class with this game panel and the keyHandler
 
 
+    // CONSTRUCTOR
     public GamePanel () {
 
         // this sets the size of this class (JPANEL)
@@ -155,4 +159,5 @@ public class GamePanel extends JPanel implements Runnable {
 
         g2.dispose(); // dispose of this graphics context and release any system resources that it is using.
     }
+
 }
