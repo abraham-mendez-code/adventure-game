@@ -120,10 +120,10 @@ public class TileManager {
 
             // this if statement draws a tile within a boundary from the center of the screen minus player screenX plus player screenX
             // and minus player screenY plus player screenY.
-            if (worldX > gp.player.worldX - gp.player.screenX &&
-                    worldX < gp.player.worldX + gp.player.screenX &&
-                    worldY > gp.player.worldY - gp.player.screenY &&
-                    worldY < gp.player.worldY + gp.player.screenY) {
+            if (worldX + gp.TILE_SIZE > gp.player.worldX - gp.player.screenX &&
+                    worldX - gp.TILE_SIZE < gp.player.worldX + gp.player.screenX &&
+                    worldY + gp.TILE_SIZE > gp.player.worldY - gp.player.screenY &&
+                    worldY - gp.TILE_SIZE < gp.player.worldY + gp.player.screenY) {
                 g2.drawImage(tile[tileNumber].image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
             }
 
