@@ -13,8 +13,8 @@ public class TileManager {
 
     // CLASS ATTRIBUTES
     GamePanel gp;
-    Tile[] tile;
-    int mapTileNumber[] []; // this array holds the values for map tiles
+    public Tile[] tile;
+    public int mapTileNumber[] []; // this array holds the values for map tiles
 
     // CONSTRUCTOR
     public TileManager(GamePanel gp) {

@@ -74,20 +74,29 @@ public class Player extends Entity{
             // check which key is being pressed
             if (keyHandler.upPressed == true) {
                 direction = "up";
-                worldY -= speed;
             } else if (keyHandler.downPressed == true) {
                 direction = "down";
-                worldY += speed;
             } else if (keyHandler.leftPressed == true) {
                 direction = "left";
-                worldX -= speed;
             } else if (keyHandler.rightPressed == true) {
                 direction = "right";
-                worldX += speed;
             }
 
+            // check tile collision;
             collisionOn = false;
             gp.collisionManager.checkTile(this); // check tile for collision
+
+            // if collision is false, player can move
+            if (!collisionOn) {
+
+                switch (direction) {
+                    case "up": worldY -= speed; break;
+                    case "down": worldY += speed; break;
+                    case "left": worldX -= speed; break;
+                    case "right": worldX += speed; break;
+                }
+
+            }
 
             spriteCounter++; // increase sprite counter every frame
             if (spriteCounter > 12) { // after 12 frames
