@@ -118,8 +118,15 @@ public class TileManager {
             int screenX = worldX - gp.player.worldX + gp.player.screenX; // offset by player world positon and player screen position (center of screen)
             int screenY = worldY - gp.player.worldY + gp.player.screenY;
 
+            // this if statement draws a tile within a boundary from the center of the screen minus player screenX plus player screenX
+            // and minus player screenY plus player screenY.
+            if (worldX > gp.player.worldX - gp.player.screenX &&
+                    worldX < gp.player.worldX + gp.player.screenX &&
+                    worldY > gp.player.worldY - gp.player.screenY &&
+                    worldY < gp.player.worldY + gp.player.screenY) {
+                g2.drawImage(tile[tileNumber].image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
+            }
 
-            g2.drawImage(tile[tileNumber].image, screenX, screenY, gp.TILE_SIZE, gp.TILE_SIZE, null);
             worldCol++;
 
             if (worldCol == gp.MAX_WORLD_COL) {
